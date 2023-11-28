@@ -8,7 +8,7 @@ public class DistributoreBevande {
 	Scanner sc = new Scanner(System.in);
 	
 	float credito, inserisciMoneta; //credito contiene il credito attuale del distributore, inserisciMoneta è la variabile in cui l'utente inserisce i valori delle monete
-	String risposta, rifornitura, decisione; //risposta permette all'utente di aggiungere ulteriori monete
+	String risposta, rifornitura, decisione, rifornimentoSI_NO; //risposta permette all'utente di aggiungere ulteriori monete
 	boolean check = true, check1 = true, check3 = true;
 	int scelta, ricarica, password; //scelta permette di scegliere una delle bevande
 	
@@ -102,26 +102,35 @@ public class DistributoreBevande {
 		System.out.println("Grazie per aver usato il distributore. Il tuo resto è "+credito);
 		credito = 0;
 		
-		do
+		System.out.println("Vuoi rifornire il distributore? (si/no)");
+		rifornimentoSI_NO = sc.nextLine();
+		rifornimentoSI_NO = rifornimentoSI_NO.toLowerCase();
+		if(rifornimentoSI_NO.equals("si"))
 		{
-			System.out.print("\ninserire la password per rifornire il distributore: ");
-			password = Integer.parseInt(sc.nextLine());
-			
-			if(password == 12345)
+			do
 			{
-				check3 = true;
-				System.out.println("Quale bevanda vuoi rifornire? [01/02/03/04/05/06/07/08/09]");
-				ricarica = Integer.parseInt(sc.nextLine());
-				bevande.get(ricarica).carica(ricarica);
-			}
-			else
-			{
-				System.out.println("Password errata.\n");
-				check3 = false;
-			}
-		} while(check3 == false);
+				System.out.print("\ninserire la password per rifornire il distributore: ");
+				password = Integer.parseInt(sc.nextLine());
+				
+				if(password == 12345)
+				{
+					check3 = true;
+					System.out.println("Quale bevanda vuoi rifornire? [01/02/03/04/05/06/07/08/09]");
+					ricarica = Integer.parseInt(sc.nextLine());
+					bevande.get(ricarica).carica(ricarica);
+				}
+				else
+				{
+					System.out.println("Password errata.\n");
+					check3 = false;
+				}
+			} while(check3 == false);
+			System.out.println("Quantità di "+bevande.get(ricarica).nome+": "+bevande.get(ricarica).quantitàDisponibile);
+		}
+		else
+			System.out.println("\nArrivederci.");
 		
-		System.out.println("Quantità di "+bevande.get(ricarica).nome+": "+bevande.get(ricarica).quantitàDisponibile);
+		
 	}
 	
 	
