@@ -1,6 +1,10 @@
 package org.generation.italy;
 
+import java.util.Scanner;
+
 public class Bevanda {
+	
+	Scanner sc = new Scanner(System.in);
 	
 	int codice, quantitàDisponibile;
 	String nome;
@@ -23,6 +27,8 @@ public class Bevanda {
 	
 	public void carica(int quantità) //questo metodo permette di caricare la quantità desiderata di bevande
 	{
-		
+		System.out.println("Inserire il numero di unità da aggiungere: ");
+		quantità = Integer.parseInt(sc.nextLine());
+		quantitàDisponibile += quantità;
 	}
 }

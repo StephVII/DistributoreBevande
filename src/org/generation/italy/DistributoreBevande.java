@@ -8,11 +8,11 @@ public class DistributoreBevande {
 	Scanner sc = new Scanner(System.in);
 	
 	float credito, inserisciMoneta; //credito contiene il credito attuale del distributore, inserisciMoneta è la variabile in cui l'utente inserisce i valori delle monete
-	String risposta; //risposta permette all'utente di aggiungere ulteriori monete
-	boolean check = true, check1 = true;
-	int scelta; //scelta permette di scegliere una delle bevande
+	String risposta, rifornitura, decisione; //risposta permette all'utente di aggiungere ulteriori monete
+	boolean check = true, check1 = true, check3 = true;
+	int scelta, ricarica, password; //scelta permette di scegliere una delle bevande
 	
-	private HashMap<Integer, Bevanda> bevande = new HashMap<>(); //questa hashmap contiene tutte le bevande
+	HashMap<Integer, Bevanda> bevande = new HashMap<>(); //questa hashmap contiene tutte le bevande
 
 	public DistributoreBevande() { //questo costruttore imposta la lista delle bevande e il valore del credito iniziale del distributore
 		bevande.put(1, new Bevanda(1, "Acqua Naturale", 0.5f));
@@ -58,34 +58,70 @@ public class DistributoreBevande {
 			System.out.println("[0"+bevande.get(bevanda).codice+"]"+" - €"+bevande.get(bevanda).prezzo+" - "+bevande.get(bevanda).nome);
 		}
 		
+		do 
+		{	
+				do
+				{
+					System.out.println("\n\nScegli una bevanda da bere:");
+					scelta = Integer.parseInt(sc.nextLine());
+					
+					if(bevande.containsKey(scelta))
+					{
+						System.out.println("\n"+bevande.get(scelta).nome+" costa €"+bevande.get(scelta).prezzo+"\n");
+						check = true;
+					}
+					else
+					{
+						System.out.println("La bevanda scelta non è disponibile.");
+						check = false;
+					}
+				} while(check == false);
+				
+				do
+				{
+					if(credito < bevande.get(scelta).prezzo)
+					{
+						System.out.println("Il credito attuale non è sufficiente per acquistare la bevanda scelta. (€"+credito+")\n");
+						credito();
+					}
+				} while(credito < bevande.get(scelta).prezzo);
+				
+				credito = credito-bevande.get(scelta).prezzo;
+				bevande.get(scelta).eroga();
+				System.out.println("Hai acquistato un'unità di "+bevande.get(scelta).nome+".\nSono stati detratti €"+bevande.get(scelta).prezzo+" dal credito. Il credito attuale è €"+credito);
+				System.out.println("Rimangono "+bevande.get(scelta).quantitàDisponibile+" unità di "+bevande.get(scelta).nome);
+				
+				System.out.println("\n\nVuoi acquistare un'altra bevanda?");
+				decisione = sc.nextLine();
+				decisione = decisione.toLowerCase();
+			
+		} 
+		while(decisione.equals("si"));
+		
+		
+		System.out.println("Grazie per aver usato il distributore. Il tuo resto è "+credito);
+		credito = 0;
+		
 		do
 		{
-			System.out.println("\n\nScegli una bevanda da bere:");
-			scelta = Integer.parseInt(sc.nextLine());
+			System.out.print("\ninserire la password per rifornire il distributore: ");
+			password = Integer.parseInt(sc.nextLine());
 			
-			if(bevande.containsKey(scelta))
+			if(password == 12345)
 			{
-				System.out.println("\n"+bevande.get(scelta).nome+" costa €"+bevande.get(scelta).prezzo+"\n");
-				check = true;
+				check3 = true;
+				System.out.println("Quale bevanda vuoi rifornire? [01/02/03/04/05/06/07/08/09]");
+				ricarica = Integer.parseInt(sc.nextLine());
+				bevande.get(ricarica).carica(ricarica);
 			}
 			else
 			{
-				System.out.println("La bevanda scelta non è disponibile.");
-				check = false;
+				System.out.println("Password errata.\n");
+				check3 = false;
 			}
-		} while(check == false);
+		} while(check3 == false);
 		
-		do
-		{
-			if(credito < bevande.get(scelta).prezzo)
-			{
-				System.out.println("Il credito attuale non è sufficiente per acquistare la bevanda scelta. (€"+credito+")\n");
-				credito();
-			}
-		} while(credito < bevande.get(scelta).prezzo);
-		
-		credito = credito-bevande.get(scelta).prezzo;
-		System.out.println("Hai acquistato un'unità di "+bevande.get(scelta).nome+".\nSono stati detratti €"+bevande.get(scelta).prezzo+" dal credito. Il credito attuale è €"+credito);
+		System.out.println("Quantità di "+bevande.get(ricarica).nome+": "+bevande.get(ricarica).quantitàDisponibile);
 	}
 	
 	
